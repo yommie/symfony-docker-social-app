@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Post;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\User;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Post|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +22,28 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    // /**
-    //  * @return Post[] Returns an array of Post objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Post
+
+
+
+    public function getUserFeed(array $followingIds): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select("p")
+            ->from(Post::class, "p")
+            ->leftJoin(
+                User::class,
+                "u",
+                Join::WITH,
+                "p.user = u.id"
+            )
+            ->where("u.id IN (:ids)")
+            ->andWhere("p.isPublished = :published")
+            ->setParameter("published", true)
+            ->setParameter("ids", $followingIds, Connection::PARAM_INT_ARRAY)
+            ->orderBy("p.createdDate", "DESC")
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
 }

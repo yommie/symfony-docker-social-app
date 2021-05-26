@@ -7,7 +7,6 @@ use App\Entity\Post as EntityPost;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Post\Exception\PostParamException;
-use App\Service\Post\Exception\PostNotFoundException;
 use App\Service\Post\Exception\NoPostUpdateParamException;
 use DateTime;
 
