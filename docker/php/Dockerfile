@@ -13,6 +13,6 @@ WORKDIR /var/www/app/
 
 CMD composer install ; \
     bin/console doctrine:migrations:migrate --no-interaction; \
-    bin/console doctrine:fixtures:load -- no-interaction ; \
+    bin/console doctrine:fixtures:load --no-interaction ; \
     bin/console lexik:jwt:generate-keypair --skip-if-exists ; \
     php-fpm
