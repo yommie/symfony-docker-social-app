@@ -14,6 +14,7 @@ use App\Service\User\Register\Exception\UserNotExistsException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Service\SocialInteraction\Exception\AlreadyFollowingException;
 use App\Service\SocialInteraction\Exception\NotFollowingException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class FollowController extends AbstractController
 {
@@ -26,6 +27,11 @@ class FollowController extends AbstractController
         Follow $followService
     ): Response {
         $email = $request->get("email");
+
+        if ($email === null) {
+            throw new BadRequestHttpException("'email' missing from request body");
+        }
+
         $follower = $this->getUser();
 
         try {

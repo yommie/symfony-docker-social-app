@@ -12,6 +12,7 @@ use App\Validator\Password\PasswordStrengthException;
 use App\Service\User\Register\Exception\UserExistsException;
 use App\Service\User\Register\Exception\InvalidEmailException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegisterController extends AbstractController
@@ -26,6 +27,9 @@ class RegisterController extends AbstractController
         $email = $request->get("email");
         $password = $request->get("password");
 
+        if ($email === null || $password === null) {
+            throw new BadRequestHttpException("'email' and 'password' must be present in request body");
+        }
 
         try {
             $registerService->registerUser(

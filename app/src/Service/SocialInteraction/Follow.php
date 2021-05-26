@@ -77,4 +77,20 @@ class Follow
         $this->entityManager->remove($following);
         $this->entityManager->flush();
     }
+
+
+
+
+
+    public function isFollowing(
+        User $user,
+        User $follower
+    ): bool {
+        $followersCheck = $this->followersRepository->findOneBy([
+            "user" => $user,
+            "follower" => $follower
+        ]);
+
+        return $followersCheck !== null;
+    }
 }
