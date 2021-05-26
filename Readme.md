@@ -22,7 +22,7 @@ It is composed by 3 containers:
 
 5. The 3 containers are deployed:
 
-```
+```bash
 Creating symfony-docker-social-app_db_1    ... done
 Creating symfony-docker-social-app_php_1   ... done
 Creating symfony-docker-social-app_nginx_1 ... done
@@ -30,33 +30,168 @@ Creating symfony-docker-social-app_nginx_1 ... done
 
 ## Functionalities
 
-1. Login
+### Login
 
- Route: `/api/v1/login`
+Route: `/api/v1/login`
+Method: `POST`
 
-2. Register
+Request Body:
 
-3. Refresh Token
+```json
+{
+    "username": "your@email.com",
+    "password": "yourpassword"
+}
+```
 
-4. Create Post
+> Also sets JWT as an HTTP Cookie
 
-5. Edit Post
+### Register
 
-6. Delete Post
+Route: `/api/v1/register`
+Method: `POST`
 
-7. View Post
+Request Body:
 
-8. Follow User
+```json
+{
+    "email": "your@email.com",
+    "password": "yourpassword"
+}
+```
 
-9. Unfollow User
+### Refresh Token
 
-10. Posts Feed
+Route: `/api/v1/token/refresh`
+Method: `POST`
 
-11. Admin View Posts
+Request Body:
 
-12. Admin Publish Post
+```json
+{
+    "refresh_token": "refresh-token-goes-here"
+}
+```
 
-13. Admin Unpublish Post
+> Also sets JWT as an HTTP Cookie
+
+### Create Post
+
+Route: `/api/v1/post`
+Method: `POST`
+
+Request Body:
+
+```json
+{
+    "title": "title-goes-here",
+    "content": "content-goes-here",
+    "short_content": "short-content-goes-here"
+}
+```
+
+### Edit Post
+
+Route: `/api/v1/post`
+Method: `PUT`
+
+Request Body:
+
+```json
+{
+    "title": "title-goes-here",
+    "content": "content-goes-here",
+    "short_content": "short-content-goes-here"
+}
+```
+
+> Parameters `title`, `content`, `short_content` are all optional. However, one of the parameters must be present in the request body
+
+### Delete Post
+
+Route: `/api/v1/post`
+Method: `DELETE`
+
+Request Body:
+
+```json
+{
+    "post_id": "post-id-goes-here"
+}
+```
+
+### View Post
+
+Route: `/api/v1/post/:postId`
+Method: `GET`
+
+> `postId` is the `id` of a created `Post`
+
+### Follow User
+
+Route: `/api/v1/follow`
+Method: `POST`
+
+Request Body:
+
+```json
+{
+    "email": "user-email-goes-here"
+}
+```
+
+### Unfollow User
+
+Route: `/api/v1/unfollow`
+Method: `POST`
+
+Request Body:
+
+```json
+{
+    "email": "user-email-goes-here"
+}
+```
+
+### Posts Feed
+
+Route: `/api/v1/feed`
+Method: `GET`
+
+> Returns a feed of all followed users posts. Only published posts are returned here.
+
+### Admin Posts
+
+Route: `/api/v1/admin/posts`
+Method: `GET`
+
+> Returns all posts in the application for the admin.
+
+### Admin Publish Post
+
+Route: `/api/v1/admin/post/publish`
+Method: `PATCH`
+
+Request Body:
+
+```json
+{
+    "post_id": "post-id-goes-here"
+}
+```
+
+### Admin Unpublish Post
+
+Route: `/api/v1/admin/post/unpublish`
+Method: `PATCH`
+
+Request Body:
+
+```json
+{
+    "post_id": "post-id-goes-here"
+}
+```
 
 ## Todo Due to time constraints
 
