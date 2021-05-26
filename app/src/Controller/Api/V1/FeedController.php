@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class FeedController extends AbstractController
 {
     /**
-     * @Route("/feed")
+     * @Route("/feed", methods={"GET"})
      */
     public function index(
         FollowersRepository $followersRepository,

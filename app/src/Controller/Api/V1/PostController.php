@@ -194,7 +194,6 @@ class PostController extends AbstractController
      */
     public function delete(
         Request $request,
-        Post $postService,
         PostRepository $postRepository,
         EntityManagerInterface $entityManager
     ): Response {
