@@ -72,7 +72,7 @@ class PostVoter extends Voter
             case self::CREATE:
                 return $this->canCreate();
             case self::VIEW:
-                return $this->canView();
+                return $this->canView($subject, $user);
             case self::EDIT:
                 return $this->canEdit($subject, $user);
             case self::DELETE:
@@ -101,9 +101,17 @@ class PostVoter extends Voter
 
 
 
-    private function canView()
+    private function canView(Post $post, User $user)
     {
-        return $this->security->isGranted(Role::USER);
+        if ($this->security->isGranted(Role::ADMIN)) {
+            return true;
+        }
+
+        if ($post->getUser() === $user) {
+            return true;
+        }
+
+        return $post->getIsPublished();
     }
 
 
