@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -34,6 +38,21 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Followers::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $followers;
+
+    public function __construct()
+    {
+        $this->followers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,5 +133,55 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getCreatedDate(): ?\DateTimeInterface
+    {
+        return $this->createdDate;
+    }
+
+    public function setCreatedDate(\DateTimeInterface $createdDate): self
+    {
+        $this->createdDate = $createdDate;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function populateCreatedDate()
+    {
+        $this->setCreatedDate(new DateTime());
+    }
+
+    /**
+     * @return Collection|Followers[]
+     */
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    public function addFollower(Followers $follower): self
+    {
+        if (!$this->followers->contains($follower)) {
+            $this->followers[] = $follower;
+            $follower->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollower(Followers $follower): self
+    {
+        if ($this->followers->removeElement($follower)) {
+            // set the owning side to null (unless already changed)
+            if ($follower->getUser() === $this) {
+                $follower->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

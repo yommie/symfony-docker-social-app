@@ -3,21 +3,21 @@
 namespace App\Controller\Api\V1;
 
 use App\Http\ApiResponse;
-use App\Service\Register\RegisterService;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\User\Register\RegisterService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Validator\Password\PasswordStrengthException;
-use App\Service\Register\Exception\UserExistsException;
-use App\Service\Register\Exception\InvalidEmailException;
+use App\Service\User\Register\Exception\UserExistsException;
+use App\Service\User\Register\Exception\InvalidEmailException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegisterController extends AbstractController
 {
     /**
-     * @Route("/register")
+     * @Route("/register", methods={"POST"})
      */
     public function index(
         Request $request,

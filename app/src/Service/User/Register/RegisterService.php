@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Register;
+namespace App\Service\User\Register;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Egulias\EmailValidator\EmailValidator;
 use App\Validator\Password\PasswordValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
-use App\Service\Register\Exception\InvalidEmailException;
-use App\Service\Register\Exception\UserExistsException;
+use App\Service\User\Register\Exception\UserExistsException;
+use App\Service\User\Register\Exception\InvalidEmailException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegisterService

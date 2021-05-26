@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Register\Exception;
+namespace App\Service\User\Register\Exception;
 
 use Exception;
 
